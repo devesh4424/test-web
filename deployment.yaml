@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-html-app
+  namespace: deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my-html-app
+  template:
+    metadata:
+      labels:
+        app: my-html-app
+    spec:
+      containers:
+      - name: my-html-app
+        image: docker.io/zinzuwad/my-html-app:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-html-app-service
+  namespace: deployment
+spec:
+  selector:
+    app: my-html-app
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: LoadBalancer
